@@ -8,10 +8,10 @@ POST {{uri}}/api/todos
 Content-Type: application/json
 
 {
-    "body":"leaning React"
+    "body":"Sample Todo"
 }
 ###
-put {{uri}}/api/todos/66dfa9c58fcef4cf4d8207a6
+PUT {{uri}}/api/todos/66dfba621bf5083b921130e7
 Content-Type: application/json
 ###
 DELETE {{uri}}/api/todos/66dfa9c58fcef4cf4d8207a6

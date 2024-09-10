@@ -7,6 +7,7 @@ import (
 	"os"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/helmet"
 	"github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/bson"
@@ -24,11 +25,12 @@ type Todo struct {
 var collection *mongo.Collection
 
 func main() {
+	if os.Getenv("ENV") != "production" {
+		err := godotenv.Load(".env")
 
-	err := godotenv.Load(".env")
-
-	if err != nil {
-		log.Fatal("Error loading .env file")
+		if err != nil {
+			log.Fatal("Error loading .env file")
+		}
 	}
 
 	mongo_uri := os.Getenv("MONGOURI")
@@ -58,11 +60,19 @@ func main() {
 	app := fiber.New()
 
 	app.Use(helmet.New())
+	app.Use(cors.New(cors.Config{
+		AllowOrigins: "http://localhost:5173",
+		AllowHeaders: "Origin, Content-Type, Accept",
+	}))
 
 	app.Get("/api/todos", getTodos)
 	app.Post("/api/todos", createTodo)
 	app.Put("/api/todos/:id", updateTodo)
 	app.Delete("/api/todos/:id", deleteTodo)
+
+	if os.Getenv("ENV") == "production" {
+		app.Static("/", "./frontend/dist")
+	}
 
 	log.Fatal(app.Listen(":" + port))
 }
