@@ -1,0 +1,17 @@
+@uri= http://localhost:5000
+//
+GET {{uri}}/
+###
+GET {{uri}}/api/todos
+###
+POST {{uri}}/api/todos
+Content-Type: application/json
+
+{
+    "body":"leaning React"
+}
+###
+put {{uri}}/api/todos/66dfa9c58fcef4cf4d8207a6
+Content-Type: application/json
+###
+DELETE {{uri}}/api/todos/66dfa9c58fcef4cf4d8207a6
